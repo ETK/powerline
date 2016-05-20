@@ -1,0 +1,35 @@
+<ion-view view-title="My Groups" hide-back-button="true" class="has-notifications-bar">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <a class="button button-icon ion-android-add-circle button-clear" href="#/groups/search"></a>
+  </ion-nav-buttons>
+
+  <section ng-include="'templates/notifications.html'"></section>
+
+  <ion-content class="content page-my-groups">
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="pullToRefresh()">
+    </ion-refresher>
+
+    <section class="margin-8">
+      <ul ng-repeat="group in items" class="profiles-list">
+        <li class="title">{{ group.letter}}</li>
+        <li ng-repeat="item in group.items">
+          <figure ng-click="navigateTo('group-profile', item)">
+            <avatar-img img="item.avatar_file_path" text="item.official_title"></avatar-img>
+          </figure>
+          <p ng-click="navigateTo('group-profile', item)">{{ item.official_title}}</p>
+          <button ng-if="item.status === 1" class="button button-clear button-remove" ng-click="unjoin(item)"><i class="icon ion-android-remove-circle"></i></button>
+          <p ng-if="item.status === 0" class="pending-message">pending approval</p>
+        </li>
+      </ul>
+    </section>
+    <section ng-show="!items.length" class="margin-10">
+      <p class="info-message" ng-show="!loading">Looks like you haven't joined any groups yet! Join or create one to make Powerline work for you!</p>
+    </section>
+
+  </ion-content>
+</ion-view>
